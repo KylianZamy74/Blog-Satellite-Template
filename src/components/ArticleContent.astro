@@ -1,0 +1,13 @@
+---
+// Ce composant prend du HTML déjà rendu par le renderer et l'injecte.
+// "set:html" dit à Astro : "c'est du HTML safe, injecte-le tel quel"
+// (on contrôle le HTML car c'est nous qui le générons via renderer.ts)
+
+interface Props {
+  html: string
+}
+
+const { html } = Astro.props
+---
+
+<div class="article-content prose prose-lg max-w-none" set:html={html} />

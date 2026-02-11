@@ -1,0 +1,21 @@
+---
+const siteName = import.meta.env.SITE_NAME || 'Mon Blog'
+const mainDomainUrl = import.meta.env.MAIN_DOMAIN_URL || '#'
+const mainDomainName = import.meta.env.MAIN_DOMAIN_NAME || 'Accueil'
+---
+
+<header class="border-b border-gray-200 bg-white">
+  <div class="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+    <a href="/blog" class="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
+      {siteName}
+    </a>
+    <a
+      href={mainDomainUrl}
+      class="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      ← {mainDomainName}
+    </a>
+  </div>
+</header>

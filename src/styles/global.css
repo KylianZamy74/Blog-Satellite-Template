@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Styles pour le contenu des articles (rendu TipTap → HTML) */
+/* @tailwindcss/typography s'occupe du gros du boulot via "prose", */
+/* ici on ajoute juste ce qui est spécifique à nos nodes custom. */
+.article-content img {
+  border-radius: 8px;
+}
+
+.article-content [data-gallery] img {
+  object-fit: cover;
+}
+
+.article-content [data-cta]:hover {
+  opacity: 0.85;
+}

@@ -1,0 +1,39 @@
+---
+import type { Article } from '../lib/types'
+
+interface Props {
+  article: Article
+}
+
+const { article } = Astro.props
+
+const date = article.publishedAt
+  ? new Date(article.publishedAt).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : null
+---
+
+<a href={`/blog/${article.slug}`} class="group block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+  {article.image && (
+    <div class="aspect-video overflow-hidden">
+      <img
+        src={article.image}
+        alt={article.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      />
+    </div>
+  )}
+  <div class="p-5">
+    {date && <p class="text-sm text-gray-500 mb-2">{date}</p>}
+    <h2 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
+      {article.title}
+    </h2>
+    {article.excerpt && (
+      <p class="text-sm text-gray-600 line-clamp-2">{article.excerpt}</p>
+    )}
+  </div>
+</a>

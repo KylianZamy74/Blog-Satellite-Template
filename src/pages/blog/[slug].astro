@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ArticleContent from '../../components/ArticleContent.astro'
+import { getArticleBySlug } from '../../lib/api'
+import { renderTipTapToHtml } from '../../lib/renderer'
+import type { TipTapDoc } from '../../lib/types'
+
+const { slug } = Astro.params
+const siteUrl = import.meta.env.SITE_URL || ''
+
+const article = await getArticleBySlug(slug!)
+if (!article) {
+  return Astro.redirect('/blog')
+}
+
+const html = renderTipTapToHtml(article.content as TipTapDoc)
+
+const title = article.metaTitle || article.title
+const description = article.metaDescription || article.excerpt || ''
+const canonicalUrl = `${siteUrl}/blog/${article.slug}`
+
+const date = article.publishedAt
+  ? new Date(article.publishedAt).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : null
+---
+
+<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl}>
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    {article.image && (
+      <img
+        src={article.image}
+        alt={article.title}
+        class="w-full rounded-lg mb-8 aspect-video object-cover"
+      />
+    )}
+
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-3">{article.title}</h1>
+      {date && <p class="text-gray-500">{date}</p>}
+    </header>
+
+    <ArticleContent html={html} />
+
+    <div class="mt-12 pt-6 border-t border-gray-200">
+      <a href="/blog" class="text-blue-600 hover:text-blue-800 transition-colors">
+        ← Retour aux articles
+      </a>
+    </div>
+  </article>
+</BaseLayout>

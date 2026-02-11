@@ -1,0 +1,10 @@
+name = "blog-satellite"
+compatibility_date = "2025-01-01"
+
+[vars]
+API_BASE_URL = "https://your-api.vercel.app"
+USER_SLUG = "mon-client"
+SITE_NAME = "Mon Blog"
+SITE_URL = "https://mon-blog.example.com"
+MAIN_DOMAIN_URL = "https://example.com"
+MAIN_DOMAIN_NAME = "Example.com"
