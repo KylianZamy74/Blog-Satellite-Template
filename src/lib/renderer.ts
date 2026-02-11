@@ -106,8 +106,11 @@ function renderNode(node: TipTapNode): string {
     }
 
     case 'heading': {
-      const level = Number(attrs.level) || 2
-      const tag = `h${Math.min(Math.max(level, 1), 6)}`
+      // On décale d'un niveau (h1→h2, h2→h3...) car le H1 de la page
+      // est déjà le titre de l'article. Un seul H1 par page = bon SEO.
+      const raw = Number(attrs.level) || 2
+      const level = Math.min(raw + 1, 6)
+      const tag = `h${level}`
       const style = attrs.textAlign ? styleAttr({ 'text-align': String(attrs.textAlign) }) : ''
       return `<${tag}${style}>${renderChildren(node.content)}</${tag}>`
     }

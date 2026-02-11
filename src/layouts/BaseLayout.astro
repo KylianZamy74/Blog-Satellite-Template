@@ -13,6 +13,7 @@ interface Props {
 const { title, description, ogImage, canonicalUrl } = Astro.props
 const siteName = import.meta.env.SITE_NAME || 'Mon Blog'
 const siteUrl = import.meta.env.SITE_URL || ''
+const gaId = import.meta.env.GA_MEASUREMENT_ID || ''
 ---
 
 <!doctype html>
@@ -40,6 +41,19 @@ const siteUrl = import.meta.env.SITE_URL || ''
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    {/* Google Analytics 4 - chargé uniquement si GA_MEASUREMENT_ID est configuré */}
+    {gaId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script set:html={`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}');
+        `} />
+      </>
+    )}
   </head>
   <body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
     <Header />
@@ -47,5 +61,22 @@ const siteUrl = import.meta.env.SITE_URL || ''
       <slot />
     </main>
     <Footer />
+
+    {/* Tracking clics CTA - event delegation car le HTML est injecté via set:html */}
+    {gaId && (
+      <script set:html={`
+        document.addEventListener('click', function(e) {
+          var cta = e.target.closest('[data-cta]');
+          if (!cta) return;
+          if (typeof gtag !== 'function') return;
+          gtag('event', 'cta_click', {
+            event_category: 'engagement',
+            event_label: cta.textContent.trim(),
+            cta_variant: cta.getAttribute('data-cta'),
+            cta_url: cta.getAttribute('href')
+          });
+        });
+      `} />
+    )}
   </body>
 </html>
