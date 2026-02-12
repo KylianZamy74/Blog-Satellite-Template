@@ -1,12 +1,13 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import ArticleCard from '../../components/ArticleCard.astro'
-import { getArticles } from '../../lib/api'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ArticleCard from '../components/ArticleCard.astro'
+import { getArticles } from '../lib/api'
 
 const siteName = import.meta.env.SITE_NAME || 'Mon Blog'
 const siteUrl = import.meta.env.SITE_URL || ''
 
 let articles = []
+
 let error = ''
 
 try {
@@ -19,7 +20,7 @@ try {
 <BaseLayout
   title={siteName}
   description={`Les derniers articles de ${siteName}`}
-  canonicalUrl={`${siteUrl}/blog`}
+  canonicalUrl={siteUrl}
 >
   <div class="mx-auto max-w-4xl px-4 py-10">
     <h1 class="text-3xl font-bold mb-8">Articles</h1>

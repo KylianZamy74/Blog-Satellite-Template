@@ -1,23 +1,23 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import ArticleContent from '../../components/ArticleContent.astro'
-import { getArticleBySlug } from '../../lib/api'
-import { renderTipTapToHtml } from '../../lib/renderer'
-import type { TipTapDoc } from '../../lib/types'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ArticleContent from '../components/ArticleContent.astro'
+import { getArticleBySlug } from '../lib/api'
+import { renderTipTapToHtml } from '../lib/renderer'
+import type { TipTapDoc } from '../lib/types'
 
 const { slug } = Astro.params
 const siteUrl = import.meta.env.SITE_URL || ''
 
 const article = await getArticleBySlug(slug!)
 if (!article) {
-  return Astro.redirect('/blog')
+  return Astro.redirect('/')
 }
 
 const html = renderTipTapToHtml(article.content as TipTapDoc)
 
 const title = article.metaTitle || article.title
 const description = article.metaDescription || article.excerpt || ''
-const canonicalUrl = `${siteUrl}/blog/${article.slug}`
+const canonicalUrl = `${siteUrl}/${article.slug}`
 
 const date = article.publishedAt
   ? new Date(article.publishedAt).toLocaleDateString('fr-FR', {
@@ -46,7 +46,7 @@ const date = article.publishedAt
     <ArticleContent html={html} />
 
     <div class="mt-12 pt-6 border-t border-gray-200">
-      <a href="/blog" class="text-blue-600 hover:text-blue-800 transition-colors">
+      <a href="/" class="text-blue-600 hover:text-blue-800 transition-colors">
         ← Retour aux articles
       </a>
     </div>
