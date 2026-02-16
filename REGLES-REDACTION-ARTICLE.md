@@ -57,6 +57,9 @@ Meta Title (max 60 caractères) :
 Meta Description (max 155 caractères) :
 [Description incitative avec mot-clé principal, bénéfice client, call-to-action]
 
+Courte description (max 2 lignes) :
+[Résumé court affiché sur la carte article dans le catalogue. Doit donner envie de cliquer.]
+
 Slug suggéré :
 [slug-en-minuscules-avec-tirets]
 
@@ -69,6 +72,7 @@ Mots-clés secondaires : [ex: location courte durée, loyer garanti, sous-locati
 
 - **Meta Title** : max 60 caractères, contient le mot-clé principal, le nom de la marque ou la ville.
 - **Meta Description** : max 155 caractères, phrase incitative, contient le mot-clé principal, donne envie de cliquer.
+- **Courte description** : max 2 lignes (~150 caractères), c'est le texte affiché sur la carte article dans le catalogue/listing. Doit être accrocheur et résumer l'intérêt de l'article en un coup d'oeil.
 - **Slug** : généré depuis le H1, en minuscules, mots séparés par des tirets, pas de mots vides inutiles.
 - **Mots-clés** : intégrés naturellement dans les H2, H3, le premier paragraphe, et la FAQ.
 
@@ -144,6 +148,20 @@ Mots-clés secondaires : [ex: location courte durée, loyer garanti, sous-locati
 1. **Image cover** : juste après le sous-titre d'accroche, en haut de l'article.
 2. **Image milieu** (optionnelle) : pour illustrer un comparatif, un schéma, ou une section clé.
 3. **Image CTA** (optionnelle) : avant le dernier call-to-action.
+
+### Suggestions de recherche — OBLIGATOIRE
+
+- Pour chaque image, le rédacteur doit fournir **une suggestion de recherche** à utiliser sur une banque d'images (Unsplash, Pexels, etc.).
+- La suggestion doit être en **anglais** (les banques d'images indexent principalement en anglais).
+- Elle doit décrire précisément le type de visuel attendu, en lien avec le contenu de la section.
+- Format dans le commentaire HTML en haut de l'article :
+
+```
+Suggestions images :
+- Cover : [recherche en anglais] — [emplacement dans l'article]
+- Milieu : [recherche en anglais] — [emplacement dans l'article]
+- CTA (optionnelle) : [recherche en anglais] — [emplacement dans l'article]
+```
 
 ### Format dans le markdown
 

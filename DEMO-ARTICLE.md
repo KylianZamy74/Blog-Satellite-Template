@@ -5,11 +5,19 @@ Conciergerie Airbnb Biarritz | Conciergerie du Littoral
 Meta Description (max 155 caractères) :
 Confiez votre location courte durée à Biarritz à des experts. Gestion complète, voyageurs triés, revenus optimisés. Estimation gratuite en 48h.
 
+Courte description (max 2 lignes) :
+Propriétaire à Biarritz ? Découvrez pourquoi déléguer votre location courte durée à une conciergerie locale change tout.
+
 Slug suggéré :
 conciergerie-airbnb-biarritz-gestion-location-courte-duree
 
 Mot-clé principal : conciergerie Airbnb Biarritz
 Mots-clés secondaires : gestion location courte durée Biarritz, conciergerie locative Pays Basque, gestion Airbnb côte basque, location saisonnière Biarritz
+
+Suggestions images :
+- Cover : "Biarritz aerial view coastline ocean" — après le paragraphe d'introduction
+- Milieu : "luxury apartment interior living room bright" — après la section comparatif (gérer seul vs déléguer)
+- CTA : "French basque country village sunset" — avant le dernier CTA
 -->
 
 Vous êtes propriétaire d'un appartement à Biarritz et vous envisagez la location courte durée. Les chiffres sont tentants : la côte basque attire chaque année plus de 3 millions de visiteurs, selon le Comité Régional du Tourisme Nouvelle-Aquitaine. Biarritz reste l'une des destinations les plus recherchées du littoral atlantique, avec un taux d'occupation Airbnb parmi les plus élevés de la région.
