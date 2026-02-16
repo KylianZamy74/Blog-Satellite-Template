@@ -92,7 +92,7 @@ Mots-clés secondaires : [ex: location courte durée, loyer garanti, sous-locati
 - **Toutes les informations sur le client** (services, chiffres, fonctionnement, équipe, témoignages) doivent provenir **exclusivement du domaine principal** analysé à l'étape 0.
 - **Aucun faux avis**, aucune fausse citation, aucun témoignage inventé.
 - **Aucun chiffre inventé** (pas de "revenus estimés", pas de "X € par mois" sauf si c'est affiché sur le site du client).
-- **Les données externes sont autorisées** uniquement si elles sont factuelles et vérifiables, et qu'elles **soutiennent le contenu principal**. Exemples autorisés :
+- **Les données externes sont autorisées** uniquement si elles sont factuelles, vérifiables, **et encore d'actualité**. Une donnée vraie mais obsolète est aussi trompeuse qu'une donnée inventée. Avant d'utiliser un chiffre externe, vérifier qu'il correspond bien aux conditions en vigueur **au moment de la rédaction** (ex : les commissions Airbnb changent régulièrement). Exemples autorisés :
   - Commissions des plateformes OTA (Airbnb, Booking) = données publiques
   - Données géographiques ou économiques d'une ville = faits vérifiables
   - Statistiques sectorielles issues de sources publiques
@@ -107,6 +107,15 @@ Mots-clés secondaires : [ex: location courte durée, loyer garanti, sous-locati
 - **Accessible** : pas de jargon technique non expliqué.
 - **Orienté conversion** : chaque section doit amener le lecteur vers l'action (contact, estimation, etc.).
 - Pas d'emojis sauf demande explicite du client.
+
+### Rythme et dynamisme — IMPORTANT
+
+- L'article doit être **rythmé**. Le but est de convertir, pas d'endormir le lecteur.
+- **Varier les formats** dans chaque section : alterner paragraphes, listes à puces, sous-titres, phrases d'accroche en gras. Pas de pavés de 10 lignes sans respiration.
+- **Phrases courtes et percutantes** : privilégier les phrases de 1 à 2 lignes max. Couper les phrases longues en deux.
+- **Accrocher dès le début** : le premier paragraphe doit poser un problème concret que le lecteur reconnaît. Pas de bla-bla introductif.
+- **Relancer l'attention** : chaque H2 doit donner envie de continuer. Formuler les titres comme des promesses ou des questions auxquelles le lecteur veut la réponse.
+- **Éviter le contenu creux** : si une phrase n'apporte pas d'information ou ne fait pas avancer le lecteur vers l'action, la supprimer.
 
 ---
 
@@ -237,4 +246,4 @@ Suggestions images :
 - [ ] FAQ de 4 à 6 questions en fin d'article
 - [ ] Ton professionnel et orienté conversion
 - [ ] Séparateurs `---` entre les sections
-- [ ] Données externes sourcées et vérifiables
+- [ ] Données externes sourcées, vérifiables et **à jour** (pas de données obsolètes)
