@@ -15,16 +15,22 @@ Ce fichier définit les règles strictes à suivre pour la rédaction de tout ar
 
 ## Structure de l'article
 
-### H1 — Titre de l'article
+### H1 — Titre de l'article (= slug)
 
-- Le H1 est **le titre de l'article** dans le gestionnaire de blog. Il est généré automatiquement par l'app, ne pas le réécrire dans le contenu.
-- Le titre sert aussi de **base pour le slug** (généré automatiquement).
+- Le H1 est **le titre de l'article** saisi dans le gestionnaire de blog. Il est affiché automatiquement par l'app, ne pas le réécrire dans le contenu.
+- Le titre sert **aussi de slug** (généré automatiquement depuis le titre). Il doit donc rester **court et percutant** tout en étant optimisé SEO.
+- **Contrainte slug** : le titre doit idéalement faire **8 à 12 mots maximum** pour produire un slug lisible et efficace. Pas de titre-fleuve.
 - Le titre **doit être optimisé longue traîne** : il cible une requête précise que les utilisateurs tapent sur Google.
 - Exemples :
-  - BON : `Gestion locative Calais : loyer garanti sans commission`
-  - BON : `Location courte durée Boulogne-sur-Mer : pourquoi déléguer à un professionnel`
-  - MAUVAIS : `Notre service de gestion`
-  - MAUVAIS : `Bienvenue sur notre blog`
+  - BON : `Gestion locative Calais : loyer garanti sans commission` → slug court et mot-clé en premier
+  - BON : `Conciergerie Airbnb Biarritz : maximisez vos revenus locatifs` → slug compact, mot-clé principal en tête
+  - MAUVAIS : `Conciergerie Airbnb à Biarritz : comment maximiser vos revenus locatifs sans y passer vos soirées` → slug beaucoup trop long
+  - MAUVAIS : `Notre service de gestion` → pas de mot-clé, trop générique
+  - MAUVAIS : `Bienvenue sur notre blog` → aucune valeur SEO
+
+### H2 — Sections principales (premier niveau dans le contenu rédigé)
+
+- Puisque le H1 est géré automatiquement par l'app, **le contenu rédigé commence directement par un paragraphe d'introduction puis des H2**. Ne jamais écrire de H1 dans le corps de l'article.
 
 ### H2 — Sections principales
 
@@ -186,6 +192,16 @@ Mots-clés secondaires : [ex: location courte durée, loyer garanti, sous-locati
 - Utiliser l'*italique* pour les nuances, les noms propres cités, et les termes à souligner.
 - Utiliser les `>` blockquotes pour les phrases d'accroche ou les citations **réelles uniquement**.
 - Utiliser les listes à puces pour les énumérations de 3+ éléments.
+
+### Tirets longs / em dash — INTERDIT
+
+- **Ne jamais utiliser** le tiret long `—` (em dash) ni le tiret moyen `–` (en dash) dans le contenu.
+- Ces caractères se rendent mal dans certains navigateurs et éditeurs, et alourdissent la lecture.
+- Remplacer systématiquement par une **virgule**, un **point**, ou une reformulation.
+- Exemples :
+  - MAUVAIS : `premier port de voyageurs de France — une opportunité unique`
+  - BON : `premier port de voyageurs de France. Une opportunité unique`
+  - BON : `premier port de voyageurs de France, une opportunité unique`
 
 ---
 
