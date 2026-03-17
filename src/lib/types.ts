@@ -36,4 +36,8 @@ export interface Article {
   publishedAt: string | null
   createdAt: string
   updatedAt: string
+  locale?: string | null
+  translationStatus?: string | null
+  originalSlug?: string
+  availableTranslations?: { locale: string; slug: string }[]
 }

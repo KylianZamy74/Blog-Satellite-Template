@@ -4,7 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'passthrough',
+  }),
+  image: {
+    service: { entrypoint: 'astro/assets/services/noop' },
+  },
   vite: {
     plugins: [tailwindcss()],
   },

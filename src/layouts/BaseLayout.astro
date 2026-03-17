@@ -3,21 +3,28 @@ import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import '../styles/global.css'
 
+interface HrefLang {
+  locale: string
+  url: string
+}
+
 interface Props {
   title: string
   description?: string
   ogImage?: string | null
   canonicalUrl?: string
+  lang?: string
+  hreflangs?: HrefLang[]
 }
 
-const { title, description, ogImage, canonicalUrl } = Astro.props
+const { title, description, ogImage, canonicalUrl, lang = 'fr', hreflangs = [] } = Astro.props
 const siteName = import.meta.env.SITE_NAME || 'Mon Blog'
 const siteUrl = import.meta.env.SITE_URL || ''
 const gaId = import.meta.env.GA_MEASUREMENT_ID || ''
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,6 +48,11 @@ const gaId = import.meta.env.GA_MEASUREMENT_ID || ''
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    {/* Hreflang - SEO multilingue */}
+    {hreflangs.map(({ locale, url }) => (
+      <link rel="alternate" hreflang={locale} href={url} />
+    ))}
 
     {/* Google Analytics 4 - chargé uniquement si GA_MEASUREMENT_ID est configuré */}
     {gaId && (

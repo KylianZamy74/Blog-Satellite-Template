@@ -9,9 +9,10 @@ function getEnv() {
   return { baseUrl, userSlug }
 }
 
-export async function getArticles(): Promise<Article[]> {
+export async function getArticles(locale?: string): Promise<Article[]> {
   const { baseUrl, userSlug } = getEnv()
-  const res = await fetch(`${baseUrl}/api/${userSlug}/articles`)
+  const params = locale ? `?locale=${locale.toUpperCase()}` : ''
+  const res = await fetch(`${baseUrl}/api/${userSlug}/articles${params}`)
   if (!res.ok) {
     throw new Error(`Erreur API ${res.status}: impossible de récupérer les articles`)
   }
@@ -19,9 +20,10 @@ export async function getArticles(): Promise<Article[]> {
   return data.articles
 }
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export async function getArticleBySlug(slug: string, locale?: string): Promise<Article | null> {
   const { baseUrl, userSlug } = getEnv()
-  const res = await fetch(`${baseUrl}/api/${userSlug}/articles/${slug}`)
+  const params = locale ? `?locale=${locale.toUpperCase()}` : ''
+  const res = await fetch(`${baseUrl}/api/${userSlug}/articles/${slug}${params}`)
   if (res.status === 404) return null
   if (!res.ok) {
     throw new Error(`Erreur API ${res.status}: impossible de récupérer l'article`)

@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ArticleContent from '../../components/ArticleContent.astro'
+import LanguageSwitcher from '../../components/LanguageSwitcher.astro'
+import { getArticleBySlug } from '../../lib/api'
+import { renderTipTapToHtml } from '../../lib/renderer'
+import type { TipTapDoc } from '../../lib/types'
+
+const { slug, locale } = Astro.params
+const siteUrl = import.meta.env.SITE_URL || ''
+
+const VALID_LOCALES = ['en', 'nl', 'de', 'es', 'it', 'pt']
+
+if (!locale || !VALID_LOCALES.includes(locale.toLowerCase())) {
+  return Astro.redirect(`/${slug}`)
+}
+
+const article = await getArticleBySlug(slug!, locale.toUpperCase())
+if (!article) {
+  return Astro.redirect(`/${slug}`)
+}
+
+const html = renderTipTapToHtml(article.content as TipTapDoc)
+
+// SEO : utiliser les meta traduites
+const title = article.metaTitle || article.title
+const description = article.metaDescription || article.excerpt || ''
+// Canonical = URL avec le slug traduit (celui de l'article retourne par l'API)
+const canonicalUrl = `${siteUrl}/${article.slug}/${locale.toLowerCase()}`
+
+const originalSlug = article.originalSlug || slug!
+const translations = article.availableTranslations || []
+
+// Construire les hreflangs pour le SEO multilingue
+const LOCALE_TO_LANG: Record<string, string> = {
+  EN: 'en', NL: 'nl', DE: 'de', ES: 'es', IT: 'it', PT: 'pt',
+}
+
+const hreflangs = [
+  { locale: 'fr', url: `${siteUrl}/${originalSlug}` },
+  ...translations.map(t => ({
+    locale: LOCALE_TO_LANG[t.locale] || t.locale.toLowerCase(),
+    url: `${siteUrl}/${t.slug}/${t.locale.toLowerCase()}`,
+  })),
+  { locale: 'x-default', url: `${siteUrl}/${originalSlug}` },
+]
+
+const date = article.publishedAt
+  ? new Date(article.publishedAt).toLocaleDateString(locale.toLowerCase(), {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : null
+---
+
+<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl} lang={locale.toLowerCase()} hreflangs={hreflangs}>
+  <article class="mx-auto max-w-3xl px-4 py-10">
+    {article.image && (
+      <img
+        src={article.image}
+        alt={article.title}
+        class="w-full rounded-lg mb-8 aspect-video object-cover"
+      />
+    )}
+
+    <header class="mb-8">
+      <div class="flex items-center justify-between mb-3">
+        <h1 class="text-4xl font-bold">{article.title}</h1>
+        <LanguageSwitcher
+          originalSlug={originalSlug}
+          currentLocale={locale}
+          translations={translations}
+        />
+      </div>
+      {date && <p class="text-gray-500">{date}</p>}
+    </header>
+
+    <ArticleContent html={html} />
+
+    <div class="mt-12 pt-6 border-t border-gray-200 flex items-center justify-between">
+      <a href="/" class="text-blue-600 hover:text-blue-800 transition-colors">
+        ← Retour aux articles
+      </a>
+      <a href={`/${originalSlug}`} class="text-blue-600 hover:text-blue-800 transition-colors">
+        Version originale (FR)
+      </a>
+    </div>
+  </article>
+</BaseLayout>

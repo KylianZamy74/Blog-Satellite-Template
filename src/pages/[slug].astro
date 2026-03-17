@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import ArticleContent from '../components/ArticleContent.astro'
+import LanguageSwitcher from '../components/LanguageSwitcher.astro'
 import { getArticleBySlug } from '../lib/api'
 import { renderTipTapToHtml } from '../lib/renderer'
 import type { TipTapDoc } from '../lib/types'
@@ -19,6 +20,23 @@ const title = article.metaTitle || article.title
 const description = article.metaDescription || article.excerpt || ''
 const canonicalUrl = `${siteUrl}/${article.slug}`
 
+const translations = article.availableTranslations || []
+
+// Construire les hreflangs pour le SEO
+const LOCALE_TO_LANG: Record<string, string> = {
+  EN: 'en', NL: 'nl', DE: 'de', ES: 'es', IT: 'it', PT: 'pt',
+}
+
+const hreflangs = [
+  { locale: 'fr', url: canonicalUrl },
+  ...translations.map(t => ({
+    locale: LOCALE_TO_LANG[t.locale] || t.locale.toLowerCase(),
+    url: `${siteUrl}/${t.slug}/${t.locale.toLowerCase()}`,
+  })),
+  // x-default pointe vers la version FR
+  { locale: 'x-default', url: canonicalUrl },
+]
+
 const date = article.publishedAt
   ? new Date(article.publishedAt).toLocaleDateString('fr-FR', {
       day: 'numeric',
@@ -28,7 +46,7 @@ const date = article.publishedAt
   : null
 ---
 
-<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl}>
+<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl} lang="fr" hreflangs={hreflangs}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     {article.image && (
       <img
@@ -39,7 +57,13 @@ const date = article.publishedAt
     )}
 
     <header class="mb-8">
-      <h1 class="text-4xl font-bold mb-3">{article.title}</h1>
+      <div class="flex items-center justify-between mb-3">
+        <h1 class="text-4xl font-bold">{article.title}</h1>
+        <LanguageSwitcher
+          originalSlug={article.slug}
+          translations={translations}
+        />
+      </div>
       {date && <p class="text-gray-500">{date}</p>}
     </header>
 
