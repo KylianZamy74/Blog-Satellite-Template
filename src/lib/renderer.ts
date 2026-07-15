@@ -33,6 +33,16 @@ function styleAttr(styles: Record<string, string | undefined>): string {
   return parts.length ? ` style="${escapeHtml(parts.join('; '))}"` : ''
 }
 
+// N'autorise que les schémas d'URL non exécutables (bloque javascript:, data:, vbscript:...)
+function sanitizeUrl(url: string): string {
+  const trimmed = (url || '').trim()
+  const isRelative = trimmed.startsWith('/') && !trimmed.startsWith('//')
+  if (/^(https?:|mailto:|tel:)/i.test(trimmed) || isRelative || trimmed.startsWith('#')) {
+    return escapeHtml(trimmed)
+  }
+  return '#'
+}
+
 // --- Marks (formatting inline : bold, italic, link...) ---
 
 function openMark(mark: TipTapMark): string {
@@ -48,8 +58,8 @@ function openMark(mark: TipTapMark): string {
     case 'code':
       return '<code>'
     case 'link': {
-      const href = escapeHtml(String(mark.attrs?.href || ''))
-      const target = mark.attrs?.target || '_blank'
+      const href = sanitizeUrl(String(mark.attrs?.href || ''))
+      const target = mark.attrs?.target === '_self' ? '_self' : '_blank'
       return `<a href="${href}" target="${target}" rel="noopener noreferrer">`
     }
     default:
@@ -119,7 +129,8 @@ function renderNode(node: TipTapNode): string {
       return `<ul>${renderChildren(node.content)}</ul>`
 
     case 'orderedList': {
-      const start = attrs.start && Number(attrs.start) !== 1 ? ` start="${attrs.start}"` : ''
+      const startNum = Number(attrs.start)
+      const start = attrs.start && startNum !== 1 && Number.isFinite(startNum) ? ` start="${startNum}"` : ''
       return `<ol${start}>${renderChildren(node.content)}</ol>`
     }
 
@@ -141,7 +152,7 @@ function renderNode(node: TipTapNode): string {
       return '<br>'
 
     case 'image': {
-      const src = escapeHtml(String(attrs.src || ''))
+      const src = sanitizeUrl(String(attrs.src || ''))
       const alt = escapeHtml(String(attrs.alt || ''))
       return `<img src="${src}" alt="${alt}">`
     }
@@ -150,10 +161,10 @@ function renderNode(node: TipTapNode): string {
 
     // Source : custom-image-extension.ts → renderHTML()
     case 'customImage': {
-      const src = escapeHtml(String(attrs.src || ''))
+      const src = sanitizeUrl(String(attrs.src || ''))
       const alt = escapeHtml(String(attrs.alt || ''))
-      const width = String(attrs.width || '100%')
-      const align = String(attrs.align || 'center')
+      const width = escapeHtml(String(attrs.width || '100%'))
+      const align = escapeHtml(String(attrs.align || 'center'))
       return (
         `<div style="text-align: ${align}; margin: 16px 0">` +
         `<img src="${src}" alt="${alt}" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px" draggable="false">` +
@@ -175,9 +186,9 @@ function renderNode(node: TipTapNode): string {
       ].join('; ')
       const imgs = images
         .map((img) => {
-          const src = escapeHtml(img.src || '')
+          const src = sanitizeUrl(img.src || '')
           const alt = escapeHtml(img.alt || '')
-          const w = img.width || '100%'
+          const w = escapeHtml(img.width || '100%')
           return `<img src="${src}" alt="${alt}" style="width: ${w}; height: auto; border-radius: 8px">`
         })
         .join('')
@@ -186,11 +197,11 @@ function renderNode(node: TipTapNode): string {
 
     // Source : cta-button-extensions.ts → renderHTML()
     case 'ctaButton': {
-      const href = escapeHtml(String(attrs.href || '#'))
+      const href = sanitizeUrl(String(attrs.href || '#'))
       const text = escapeHtml(String(attrs.text || 'Cliquez ici'))
       const variant = String(attrs.variant || 'primary')
-      const color = String(attrs.color || '#2563eb')
-      const align = String(attrs.align || 'left')
+      const color = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.color)) ? String(attrs.color) : '#2563eb'
+      const align = escapeHtml(String(attrs.align || 'left'))
 
       const baseStyles = [
         'display: inline-block',
