@@ -2,6 +2,8 @@ name = "blog-satellite"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Config par défaut (utilisée par `wrangler dev` / `wrangler deploy` sans --env).
+# Ne sert qu'en local, ne jamais l'attacher à un vrai domaine.
 [vars]
 API_BASE_URL = "https://your-api.vercel.app"
 USER_SLUG = "mon-client"
@@ -10,3 +12,25 @@ SITE_URL = "https://mon-blog.example.com"
 MAIN_DOMAIN_URL = "https://example.com"
 MAIN_DOMAIN_NAME = "Example.com"
 GA_MEASUREMENT_ID = "G-XXXXXXXXXX"
+
+# ============================================================
+# Un client = un environnement nommé ci-dessous.
+# Pour ajouter un nouveau client : copier-coller un bloc [env.xxx]
+# + [env.xxx.vars], l'adapter, puis :
+#   npx wrangler deploy --env xxx
+# Ça crée/met à jour un Worker Cloudflare dédié à ce client,
+# sans jamais toucher au code ni forker le repo.
+# ============================================================
+
+# --- Exemple : client-a ---
+# [env.client-a]
+# name = "blog-client-a"
+#
+# [env.client-a.vars]
+# API_BASE_URL = "https://manage-blog-satellite.vercel.app"
+# USER_SLUG = "client-a"
+# SITE_NAME = "Blog Client A"
+# SITE_URL = "https://blog.client-a.com"
+# MAIN_DOMAIN_URL = "https://client-a.com"
+# MAIN_DOMAIN_NAME = "Client A"
+# GA_MEASUREMENT_ID = ""
