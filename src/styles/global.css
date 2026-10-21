@@ -1,6 +1,26 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Tokens alimentés par src/lib/theme.ts (variables d'env du client) */
+@theme inline {
+  --color-primary: var(--theme-primary);
+  --color-surface: var(--theme-background);
+  --color-ink: var(--theme-text);
+  --font-heading: var(--theme-font-heading);
+  --font-body: var(--theme-font-body);
+}
+
+.article-content {
+  --tw-prose-body: var(--theme-text);
+  --tw-prose-headings: var(--theme-text);
+  --tw-prose-links: var(--theme-primary);
+  --tw-prose-quote-borders: var(--theme-primary);
+}
+
+.article-content :where(h1, h2, h3, h4) {
+  font-family: var(--theme-font-heading);
+}
+
 /* Styles pour le contenu des articles (rendu TipTap → HTML) */
 /* @tailwindcss/typography s'occupe du gros du boulot via "prose", */
 /* ici on ajoute juste ce qui est spécifique à nos nodes custom. */
