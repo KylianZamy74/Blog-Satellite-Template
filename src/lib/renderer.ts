@@ -200,7 +200,7 @@ function renderNode(node: TipTapNode): string {
       const href = sanitizeUrl(String(attrs.href || '#'))
       const text = escapeHtml(String(attrs.text || 'Cliquez ici'))
       const variant = String(attrs.variant || 'primary')
-      const color = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.color)) ? String(attrs.color) : '#2563eb'
+      const color = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.color)) ? String(attrs.color) : 'var(--theme-primary)'
       const align = escapeHtml(String(attrs.align || 'left'))
 
       const baseStyles = [

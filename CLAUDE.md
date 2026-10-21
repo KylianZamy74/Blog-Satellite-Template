@@ -193,6 +193,12 @@ SITE_NAME=Mon Blog                    # Nom affiche dans le header
 SITE_URL=http://localhost:4321        # URL canonique du blog
 MAIN_DOMAIN_URL=https://example.com   # Site principal du client
 MAIN_DOMAIN_NAME=Example.com          # Nom affiche pour le lien retour
+THEME_PRIMARY=#2563eb                 # Couleur d'accent (hex), optionnel
+THEME_BACKGROUND=#f9fafb              # Fond de page (hex), optionnel
+THEME_TEXT=#111827                    # Couleur du texte (hex), optionnel
+THEME_FONT_HEADING=Playfair Display   # Police Google Fonts des titres, optionnel
+THEME_FONT_BODY=Inter                 # Police Google Fonts du texte, optionnel
+LOGO_URL=https://...                  # Logo (https) a la place du nom, optionnel
 ```
 
 ### Etapes de construction (dans l'ordre)
