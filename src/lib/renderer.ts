@@ -34,6 +34,15 @@ function styleAttr(styles: Record<string, string | undefined>): string {
 }
 
 // N'autorise que les schémas d'URL non exécutables (bloque javascript:, data:, vbscript:...)
+// Alignement et décalage libre (posés par la grille de l'éditeur du manager) : valeurs strictes uniquement
+function safeAlign(value: unknown, fallback: string): string {
+  return value === 'left' || value === 'center' || value === 'right' ? value : fallback
+}
+
+function offsetStyle(offset: unknown, align: string): string {
+  return align === 'left' && typeof offset === 'string' && /^\d{1,2}(\.\d{1,2})?%$/.test(offset) ? `; margin-left: ${offset}` : ''
+}
+
 function sanitizeUrl(url: string): string {
   const trimmed = (url || '').trim()
   const isRelative = trimmed.startsWith('/') && !trimmed.startsWith('//')
@@ -164,10 +173,10 @@ function renderNode(node: TipTapNode): string {
       const src = sanitizeUrl(String(attrs.src || ''))
       const alt = escapeHtml(String(attrs.alt || ''))
       const width = escapeHtml(String(attrs.width || '100%'))
-      const align = escapeHtml(String(attrs.align || 'center'))
+      const align = safeAlign(attrs.align, 'center')
       return (
         `<div style="text-align: ${align}; margin: 16px 0">` +
-        `<img src="${src}" alt="${alt}" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px" draggable="false">` +
+        `<img src="${src}" alt="${alt}" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px${offsetStyle(attrs.offset, align)}" draggable="false">` +
         `</div>`
       )
     }
@@ -201,7 +210,7 @@ function renderNode(node: TipTapNode): string {
       const text = escapeHtml(String(attrs.text || 'Cliquez ici'))
       const variant = String(attrs.variant || 'primary')
       const color = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.color)) ? String(attrs.color) : 'var(--theme-primary)'
-      const align = escapeHtml(String(attrs.align || 'left'))
+      const align = safeAlign(attrs.align, 'left')
 
       const baseStyles = [
         'display: inline-block',
@@ -222,7 +231,7 @@ function renderNode(node: TipTapNode): string {
 
       return (
         `<div style="text-align: ${align}; margin: 16px 0">` +
-        `<a href="${href}" style="${baseStyles}; ${variantStyles}" data-cta="${variant}" target="_blank" rel="noopener noreferrer">${text}</a>` +
+        `<a href="${href}" style="${baseStyles}; ${variantStyles}${offsetStyle(attrs.offset, align)}" data-cta="${variant}" target="_blank" rel="noopener noreferrer">${text}</a>` +
         `</div>`
       )
     }
