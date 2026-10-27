@@ -247,5 +247,10 @@ function renderNode(node: TipTapNode): string {
 
 export function renderTipTapToHtml(doc: TipTapDoc): string {
   if (!doc || !doc.content) return ''
-  return renderChildren(doc.content)
+  // Les lignes vides en début et fin d'article (ligne de fin gardée par l'éditeur) n'ont rien à afficher
+  const isBlank = (n: TipTapNode) => n.type === 'paragraph' && !n.content?.length
+  const content = [...doc.content]
+  while (content.length && isBlank(content[0])) content.shift()
+  while (content.length && isBlank(content[content.length - 1])) content.pop()
+  return renderChildren(content)
 }
