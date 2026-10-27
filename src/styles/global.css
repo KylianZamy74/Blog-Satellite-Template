@@ -32,6 +32,13 @@
   object-fit: cover;
 }
 
-.article-content [data-cta]:hover {
-  opacity: 0.85;
+/* Survol des CTA : --cta-hover est posé sur le bouton par le renderer */
+.article-content [data-cta="primary"]:hover {
+  background-color: var(--cta-hover) !important;
+  border-color: var(--cta-hover) !important;
+}
+
+.article-content [data-cta="secondary"]:hover {
+  color: var(--cta-hover) !important;
+  border-color: var(--cta-hover) !important;
 }

@@ -210,6 +210,10 @@ function renderNode(node: TipTapNode): string {
       const text = escapeHtml(String(attrs.text || 'Cliquez ici'))
       const variant = String(attrs.variant || 'primary')
       const color = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.color)) ? String(attrs.color) : 'var(--theme-primary)'
+      // Couleur de survol choisie dans le manager, sinon la couleur principale assombrie
+      const hoverColor = /^#[0-9a-fA-F]{3,8}$/.test(String(attrs.hoverColor))
+        ? String(attrs.hoverColor)
+        : `color-mix(in srgb, ${color} 80%, black)`
       const align = safeAlign(attrs.align, 'left')
 
       const baseStyles = [
@@ -221,7 +225,8 @@ function renderNode(node: TipTapNode): string {
         'text-decoration: none',
         'text-align: center',
         'cursor: pointer',
-        'transition: opacity 0.2s',
+        'transition: background-color 0.2s, border-color 0.2s, color 0.2s',
+        `--cta-hover: ${hoverColor}`,
       ].join('; ')
 
       const variantStyles =
