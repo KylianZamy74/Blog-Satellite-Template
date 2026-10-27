@@ -170,7 +170,7 @@ function renderNode(node: TipTapNode): string {
     case 'image': {
       const src = sanitizeUrl(String(attrs.src || ''))
       const alt = escapeHtml(String(attrs.alt || ''))
-      return `<img src="${src}" alt="${alt}">`
+      return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async">`
     }
 
     // --- Nodes custom (reproduisent le renderHTML() des extensions) ---
@@ -183,7 +183,7 @@ function renderNode(node: TipTapNode): string {
       const align = safeAlign(attrs.align, 'center')
       return (
         `<div style="text-align: ${align}; ${blockMargin(attrs.spaceBefore)}">` +
-        `<img src="${src}" alt="${alt}" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px${offsetStyle(attrs.offset, align)}" draggable="false">` +
+        `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px${offsetStyle(attrs.offset, align)}" draggable="false">` +
         `</div>`
       )
     }
@@ -205,7 +205,7 @@ function renderNode(node: TipTapNode): string {
           const src = sanitizeUrl(img.src || '')
           const alt = escapeHtml(img.alt || '')
           const w = escapeHtml(img.width || '100%')
-          return `<img src="${src}" alt="${alt}" style="width: ${w}; height: auto; border-radius: 8px">`
+          return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="width: ${w}; height: auto; border-radius: 8px">`
         })
         .join('')
       return `<div style="${gridStyle}" data-gallery="true">${imgs}</div>`

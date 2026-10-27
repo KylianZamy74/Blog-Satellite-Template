@@ -4,6 +4,7 @@ import ArticleContent from '../../components/ArticleContent.astro'
 import LanguageSwitcher from '../../components/LanguageSwitcher.astro'
 import { getArticleBySlug } from '../../lib/api'
 import { renderTipTapToHtml } from '../../lib/renderer'
+import { articleJsonLd } from '../../lib/seo'
 import type { TipTapDoc } from '../../lib/types'
 
 const { slug, locale } = Astro.params
@@ -54,13 +55,14 @@ const date = article.publishedAt
   : null
 ---
 
-<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl} lang={locale.toLowerCase()} hreflangs={hreflangs}>
+<BaseLayout title={title} description={description} ogImage={article.image} canonicalUrl={canonicalUrl} ogType="article" jsonLd={articleJsonLd(article, { url: canonicalUrl, lang: locale.toLowerCase() })} lang={locale.toLowerCase()} hreflangs={hreflangs}>
   <article class="mx-auto max-w-3xl px-4 py-10">
     {article.image && (
       <img
         src={article.image}
         alt={article.title}
         class="w-full rounded-lg mb-8 aspect-video object-cover"
+        fetchpriority="high"
       />
     )}
 

@@ -16,9 +16,13 @@ interface Props {
   canonicalUrl?: string
   lang?: string
   hreflangs?: HrefLang[]
+  /** "article" sur les pages article, "website" ailleurs */
+  ogType?: 'website' | 'article'
+  /** données structurées schema.org de la page */
+  jsonLd?: Record<string, unknown>
 }
 
-const { title, description, ogImage, canonicalUrl, lang = 'fr', hreflangs = [] } = Astro.props
+const { title, description, ogImage, canonicalUrl, lang = 'fr', hreflangs = [], ogType = 'website', jsonLd } = Astro.props
 const siteName = import.meta.env.SITE_NAME || 'Mon Blog'
 const siteUrl = import.meta.env.SITE_URL || ''
 const gaId = import.meta.env.GA_MEASUREMENT_ID || ''
@@ -48,7 +52,7 @@ const theme = getTheme()
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteName} />
     {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
 
@@ -59,6 +63,9 @@ const theme = getTheme()
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    {/* « < » échappé : le texte de l'article ne peut pas fermer la balise script */}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
 
     {/* Hreflang - SEO multilingue */}
     {hreflangs.map(({ locale, url }) => (
