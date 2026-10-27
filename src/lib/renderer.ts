@@ -43,6 +43,13 @@ function offsetStyle(offset: unknown, align: string): string {
   return align === 'left' && typeof offset === 'string' && /^\d{1,2}(\.\d{1,2})?%$/.test(offset) ? `; margin-left: ${offset}` : ''
 }
 
+// Espace libre au-dessus d'un bloc déplacé dans l'éditeur (en px), ajouté à sa marge normale de 16px
+function blockMargin(spaceBefore: unknown): string {
+  const space = Number(spaceBefore)
+  const extra = Number.isInteger(space) && space > 0 && space <= 2000 ? space : 0
+  return `margin: ${16 + extra}px 0 16px`
+}
+
 function sanitizeUrl(url: string): string {
   const trimmed = (url || '').trim()
   const isRelative = trimmed.startsWith('/') && !trimmed.startsWith('//')
@@ -121,8 +128,7 @@ function renderNode(node: TipTapNode): string {
 
     case 'paragraph': {
       const style = attrs.textAlign ? styleAttr({ 'text-align': String(attrs.textAlign) }) : ''
-      // Une ligne vide garde sa hauteur, comme dans l'éditeur (espace laissé en déplaçant un bloc)
-      return `<p${style}>${renderChildren(node.content) || '<br>'}</p>`
+      return `<p${style}>${renderChildren(node.content)}</p>`
     }
 
     case 'heading': {
@@ -176,7 +182,7 @@ function renderNode(node: TipTapNode): string {
       const width = escapeHtml(String(attrs.width || '100%'))
       const align = safeAlign(attrs.align, 'center')
       return (
-        `<div style="text-align: ${align}; margin: 16px 0">` +
+        `<div style="text-align: ${align}; ${blockMargin(attrs.spaceBefore)}">` +
         `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px${offsetStyle(attrs.offset, align)}" draggable="false">` +
         `</div>`
       )
@@ -236,7 +242,7 @@ function renderNode(node: TipTapNode): string {
           : `background-color: transparent; color: ${color}; border: 2px solid ${color}`
 
       return (
-        `<div style="text-align: ${align}; margin: 16px 0">` +
+        `<div style="text-align: ${align}; ${blockMargin(attrs.spaceBefore)}">` +
         `<a href="${href}" style="${baseStyles}; ${variantStyles}${offsetStyle(attrs.offset, align)}" data-cta="${variant}" target="_blank" rel="noopener noreferrer">${text}</a>` +
         `</div>`
       )
@@ -252,10 +258,5 @@ function renderNode(node: TipTapNode): string {
 
 export function renderTipTapToHtml(doc: TipTapDoc): string {
   if (!doc || !doc.content) return ''
-  // Les lignes vides en début et fin d'article (ligne de fin gardée par l'éditeur) n'ont rien à afficher
-  const isBlank = (n: TipTapNode) => n.type === 'paragraph' && !n.content?.length
-  const content = [...doc.content]
-  while (content.length && isBlank(content[0])) content.shift()
-  while (content.length && isBlank(content[content.length - 1])) content.pop()
-  return renderChildren(content)
+  return renderChildren(doc.content)
 }
