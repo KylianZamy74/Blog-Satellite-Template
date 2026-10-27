@@ -121,7 +121,8 @@ function renderNode(node: TipTapNode): string {
 
     case 'paragraph': {
       const style = attrs.textAlign ? styleAttr({ 'text-align': String(attrs.textAlign) }) : ''
-      return `<p${style}>${renderChildren(node.content)}</p>`
+      // Une ligne vide garde sa hauteur, comme dans l'éditeur (espace laissé en déplaçant un bloc)
+      return `<p${style}>${renderChildren(node.content) || '<br>'}</p>`
     }
 
     case 'heading': {
