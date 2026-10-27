@@ -42,3 +42,15 @@
   color: var(--cta-hover) !important;
   border-color: var(--cta-hover) !important;
 }
+
+/* Rangées (images et CTA côte à côte) : sur petit écran, les blocs passent les uns sous les autres */
+@media (max-width: 640px) {
+  .article-content [data-row] {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .article-content [data-row] > div {
+    width: 100% !important;
+  }
+}

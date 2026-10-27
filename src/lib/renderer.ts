@@ -107,10 +107,11 @@ function closeMark(mark: TipTapMark): string {
 function renderChildren(nodes?: TipTapNode[]): string {
   if (!nodes || nodes.length === 0) return ''
   // On appelle renderNode() sur chaque enfant et on concatène
-  return nodes.map(renderNode).join('')
+  return nodes.map((node) => renderNode(node)).join('')
 }
 
-function renderNode(node: TipTapNode): string {
+// inRow : le bloc est dans une rangée (images et CTA côte à côte), sa place vient de l'ordre des blocs
+function renderNode(node: TipTapNode, inRow = false): string {
   // Cas de base de la récursion : un noeud "text" (feuille, pas d'enfants)
   if (node.type === 'text') {
     let html = escapeHtml(node.text || '')
@@ -181,6 +182,13 @@ function renderNode(node: TipTapNode): string {
       const alt = escapeHtml(String(attrs.alt || ''))
       const width = escapeHtml(String(attrs.width || '100%'))
       const align = safeAlign(attrs.align, 'center')
+      if (inRow) {
+        return (
+          `<div style="flex: 0 1 auto; width: ${width}">` +
+          `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="display: block; width: 100%; height: auto; border-radius: 8px" draggable="false">` +
+          `</div>`
+        )
+      }
       return (
         `<div style="text-align: ${align}; ${blockMargin(attrs.spaceBefore)}">` +
         `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="display: inline-block; width: ${width}; max-width: 100%; height: auto; border-radius: 8px${offsetStyle(attrs.offset, align)}" draggable="false">` +
@@ -242,10 +250,19 @@ function renderNode(node: TipTapNode): string {
           : `background-color: transparent; color: ${color}; border: 2px solid ${color}`
 
       return (
-        `<div style="text-align: ${align}; ${blockMargin(attrs.spaceBefore)}">` +
-        `<a href="${href}" style="${baseStyles}; ${variantStyles}${offsetStyle(attrs.offset, align)}" data-cta="${variant}" target="_blank" rel="noopener noreferrer">${text}</a>` +
+        `<div style="${inRow ? 'flex: 0 0 auto' : `text-align: ${align}; ${blockMargin(attrs.spaceBefore)}`}">` +
+        `<a href="${href}" style="${baseStyles}; ${variantStyles}${inRow ? '' : offsetStyle(attrs.offset, align)}" data-cta="${variant}" target="_blank" rel="noopener noreferrer">${text}</a>` +
         `</div>`
       )
+    }
+
+    // Source : block-row-extension.ts → renderHTML() (seuls les images et CTA y sont rendus)
+    case 'blockRow': {
+      const items = (node.content || [])
+        .filter((child) => child.type === 'customImage' || child.type === 'ctaButton')
+        .map((child) => renderNode(child, true))
+        .join('')
+      return `<div data-row style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 16px 0">${items}</div>`
     }
 
     // Noeud inconnu : on rend juste les enfants (graceful degradation)
